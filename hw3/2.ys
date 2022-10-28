@@ -1,0 +1,19 @@
+irmovq src,%r10 #Set address of src to r10
+    irmovq dest, %r11 #Set address of dest to r11
+    
+
+    irmovq $8,%r8        # Constant 8
+    irmovq $1,%r9        # Constant 1
+    xorq %rbx,%rbx       # sum = 0
+    andq %rax,%rax       # Set CC
+    jmp     test         # Goto test
+loop:   
+    mrmovq (%r10), %r12   # Get *start array 1
+    mrmovq (%r11), %r13   # Get *start array 2
+    rmmovq %r12, (%r11)   # Change array 2 with array 1
+    
+    addq %r8,%r10        # start++ (move down address list)
+    addq %r8,%r11        # start++ (move down address list)
+    
+    subq %r9,%rax        # count--.  Set CC
+test:   jne    loop          # Stop when 0

@@ -1,0 +1,48 @@
+init:
+irmovq data, %rsi # RSI storing *data
+rrmovq %rax, %rsp # initiate rsp to rax value
+
+irmovq $8, %r8 #Store iterator 8
+irmovq $1, %r9 #Store counter
+irmovq $0, %r10 #Store Boolean ifSwap
+
+rrmovq %rsi, %rbx   #Set rbx to next index address
+addq %r8, %rbx
+
+andq %r8, %r8
+jmp test
+
+#rcx: current index value
+#rdx: next index value
+
+#rsi: current value address
+#rbx: next index address
+
+#rsp: temp loop counter
+#rdi: temp array switch var
+#r10: Bool ifswap
+
+# YOUR CODE HERE
+
+
+
+
+loop:
+    mrmovq (%rsi), %rcx
+    mrmovq (%rbx), %rdx    # Set values for comparison
+    subq %rcx, %rdx        #Check for greater than
+    jge skip
+    mrmovq (%rbx), %rdx    # reset rdx after comparison
+   # rrmovq %rcx, %rdi
+    rmmovq %rcx, (%rbx)
+    rmmovq %rdx, (%rsi)     #swap values
+    irmovq $1, %r10         #ifswap = true
+skip:    
+    addq %r8, %rsi   #Update address for i and i + 1
+    addq %r8, %rbx
+    subq %r9, %rsp   #Iterate through rsp
+test:jne loop
+    irmovq $0, %r13
+    subq %r10, %r13
+    jne init
+    halt

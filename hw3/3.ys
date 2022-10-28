@@ -1,0 +1,25 @@
+irmovq list, %rcx
+irmovq $8, %r8      # Constant 8
+rrmovq %rcx, %rdx
+addq %r8, %rdx
+
+          
+    irmovq $0,%r9        # Constant 0
+    xorq %rax,%rax       # sum = 0
+    andq %r8,%r8       # Set CC
+    
+    jmp     test         # Goto test
+loop:   
+    mrmovq (%rcx), %r10   # Get *start array 1
+    irmovq $0,%r9
+   
+    addq %r10, %rax      # Add stored value to rax
+    mrmovq (%rdx), %rcx    # Change *value to rcx
+    rrmovq %rcx, %rdx    # Copy rcx to rdx
+    addq %r8, %rdx       # Add 8 to give rdx new address
+    
+    
+    
+    subq %rcx,%r9        # count--.  Set CC
+test:   jne    loop          # Stop when 0
+halt
